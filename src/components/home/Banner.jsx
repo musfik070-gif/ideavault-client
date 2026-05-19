@@ -107,7 +107,7 @@ const Banner = () => {
                 to="/ideas"
                 className="inline-block bg-blue-600 hover:bg-blue-700 duration-300 text-white px-6 py-3 rounded-xl font-semibold"
               >
-                Explore Ideas
+                Explore Ideas-
               </Link>
             </div>
 
