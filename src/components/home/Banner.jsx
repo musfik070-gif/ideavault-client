@@ -52,7 +52,7 @@ const Banner = () => {
           <div className="max-w-7xl mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-10 items-center">
             <div className="space-y-6">
               <h1 className="text-5xl lg:text-7xl font-bold text-white leading-tight">
-                Discover The Next Big Innovation
+                Discover The Next Big Innovation.
               </h1>
 
               <p className="text-gray-300 text-lg">
