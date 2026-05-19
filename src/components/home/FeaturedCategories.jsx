@@ -1,41 +1,31 @@
 const FeaturedCategories = () => {
   const categories = [
-    {
-      name: "Productivity",
-      detail: "Tools for smarter work and faster delivery.",
-    },
-    {
-      name: "Health & Wellness",
-      detail: "Ideas that support better habits and balance.",
-    },
-    {
-      name: "Education",
-      detail: "Learning platforms and knowledge-sharing concepts.",
-    },
+    "AI",
+    "Health",
+    "Education",
+    "FinTech",
+    "E-Commerce",
+    "Cyber Security",
   ];
 
   return (
-    <section className="py-16 px-6 bg-base-200 rounded-3xl">
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-8">
-          <p className="text-sm uppercase tracking-[0.3em] text-violet-600">
-            Featured
-          </p>
-          <h2 className="text-3xl font-bold mt-3">Featured Categories</h2>
-          <p className="mt-2 text-base text-gray-600 dark:text-gray-300">
-            Browse the most popular categories for the latest idea trends.
+    <section className="bg-gray-100 dark:bg-gray-800 py-20">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold">Explore Categories</h2>
+
+          <p className="text-gray-500 dark:text-gray-400 mt-4">
+            Browse ideas based on industries and startup sectors.
           </p>
         </div>
-        <div className="grid gap-6 md:grid-cols-3">
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories.map((category) => (
             <div
-              key={category.name}
-              className="rounded-3xl border border-gray-200 dark:border-gray-700 p-6 hover:border-violet-500 transition-all"
+              key={category}
+              className="bg-white dark:bg-gray-900 p-10 rounded-3xl text-center shadow-md hover:-translate-y-2 duration-300"
             >
-              <h3 className="text-xl font-semibold">{category.name}</h3>
-              <p className="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">
-                {category.detail}
-              </p>
+              <h3 className="text-2xl font-bold">{category}</h3>
             </div>
           ))}
         </div>
