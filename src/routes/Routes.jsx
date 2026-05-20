@@ -5,6 +5,8 @@ import Ideas from "../pages/Ideas";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import ErrorPage from "../pages/ErrorPage";
+import PrivateRoute from "./PrivateRoute";
+import AddIdea from "../pages/AddIdea";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +21,14 @@ const router = createBrowserRouter([
       {
         path: "/ideas",
         element: <Ideas />,
+      },
+      {
+        path: "/add-idea",
+        element: (
+          <PrivateRoute>
+            <AddIdea />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/login",

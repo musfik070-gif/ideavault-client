@@ -1,10 +1,18 @@
 import { Link, NavLink } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
 import ThemeToggle from "./ThemeToggle";
+import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
-  // temporary fake user
-  const user = null;
+  const { user } = useAuth();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    toast.success("Logout Successful");
+    window.location.reload();
+  };
 
   const links = (
     <>
@@ -57,7 +65,9 @@ const Navbar = () => {
 
         {/* CENTER */}
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1 gap-2 text-gray-800 dark:text-white font-medium">{links}</ul>
+          <ul className="menu menu-horizontal px-1 gap-2 text-gray-800 dark:text-white font-medium">
+            {links}
+          </ul>
         </div>
 
         {/* RIGHT */}
@@ -65,37 +75,30 @@ const Navbar = () => {
           <ThemeToggle />
 
           {user ? (
-            <div className="dropdown dropdown-end">
-              <div tabIndex={0} role="button" className="avatar">
-                <div className="w-10 rounded-full">
-                  <img src="https://i.ibb.co/4pDNDk1/avatar.png" alt="user" />
-                </div>
-              </div>
+            <div className="flex items-center gap-4">
+              <img
+                src={user.photo}
+                alt="user"
+                className="w-10 h-10 rounded-full object-cover border"
+              />
 
-              <ul
-                tabIndex={0}
-                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white dark:bg-gray-800 text-gray-800 dark:text-white rounded-box w-52"
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl"
               >
-                <li>
-                  <Link to="/profile">Profile Management</Link>
-                </li>
-
-                <li>
-                  <button>Logout</button>
-                </li>
-              </ul>
+                Logout
+              </button>
             </div>
           ) : (
-            <div className="flex gap-2">
-              <Link to="/login" className="px-4 py-2 rounded-lg bg-blue-600 text-white">
-                Login
+            <div className="flex items-center gap-3">
+              <Link to="/login">
+                <button className="border px-5 py-2 rounded-xl">Login</button>
               </Link>
 
-              <Link
-                to="/register"
-                className="px-4 py-2 rounded-lg bg-blue-600 text-white"
-              >
-                Register
+              <Link to="/register">
+                <button className="bg-blue-600 text-white px-5 py-2 rounded-xl">
+                  Register
+                </button>
               </Link>
             </div>
           )}

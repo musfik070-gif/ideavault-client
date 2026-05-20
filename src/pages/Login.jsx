@@ -1,9 +1,11 @@
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from || "/";
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -26,7 +28,7 @@ const Login = () => {
       // SAVE USER
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
-      toast.success("Login Successful");
+      toast.sucfroms("Login Successful");
 
       navigate("/");
     } catch (error) {
