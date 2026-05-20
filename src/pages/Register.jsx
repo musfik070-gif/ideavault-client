@@ -48,7 +48,7 @@ const Register = () => {
       toast.success("Registration Successful");
       navigate("/");
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Registration failed");
+      toast.error(error?.response?.data?.message || "Something went wrong!");
     }
   };
 

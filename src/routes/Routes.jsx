@@ -7,6 +7,8 @@ import Register from "../pages/Register";
 import ErrorPage from "../pages/ErrorPage";
 import PrivateRoute from "./PrivateRoute";
 import AddIdea from "../pages/AddIdea";
+import MyIdeas from "../pages/MyIdeas";
+import MyInteractions from "../pages/MyInteractions";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +29,22 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <AddIdea />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/my-ideas",
+        element: (
+          <PrivateRoute>
+            <MyIdeas />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/my-interactions",
+        element: (
+          <PrivateRoute>
+            <MyInteractions />
           </PrivateRoute>
         ),
       },

@@ -28,11 +28,14 @@ const Login = () => {
       // SAVE USER
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
-      toast.sucfroms("Login Successful");
+      const isPasswordMatched = response.data.isPasswordMatched;
+      console.log(isPasswordMatched);
 
-      navigate("/");
+      toast.success("Login Successful");
+
+      navigate(from);
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Login failed");
+      toast.error(error.response?.data?.message || "Login failed");
     }
   };
 
