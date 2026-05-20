@@ -1,32 +1,33 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext();
 
+// only-export-components
 export const useAuth = () => {
   return useContext(AuthContext);
 };
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const savedUser = localStorage.getItem("ideaVaultUser");
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem("user");
 
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      return JSON.parse(savedUser);
     }
-  }, []);
+
+    return null;
+  });
 
   const loginUser = (userData) => {
     setUser(userData);
 
-    localStorage.setItem("ideaVaultUser", JSON.stringify(userData));
+    localStorage.setItem("user", JSON.stringify(userData));
   };
 
   const logoutUser = () => {
     setUser(null);
 
-    localStorage.removeItem("ideaVaultUser");
+    localStorage.removeItem("user");
   };
 
   const authInfo = {

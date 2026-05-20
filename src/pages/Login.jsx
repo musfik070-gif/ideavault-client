@@ -1,11 +1,13 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../providers/AuthProvider";
 
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from || "/";
+  const { loginUser } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -26,7 +28,7 @@ const Login = () => {
       localStorage.setItem("token", response.data.token);
 
       // SAVE USER
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+      loginUser(response.data.user);
 
       const isPasswordMatched = response.data.isPasswordMatched;
       console.log(isPasswordMatched);

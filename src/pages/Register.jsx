@@ -3,9 +3,11 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../providers/AuthProvider";
 
 const Register = () => {
   const navigate = useNavigate();
+  const { loginUser } = useAuth();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -44,6 +46,7 @@ const Register = () => {
 
       // SAVE TOKEN
       localStorage.setItem("token", response.data.token);
+      loginUser(response.data.user || { name, email, photo });
 
       toast.success("Registration Successful");
       navigate("/");

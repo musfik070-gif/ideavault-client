@@ -19,10 +19,14 @@ const AddIdea = () => {
       description,
       category,
       image,
-      userName: user?.name,
+
       userEmail: user?.email,
-      userPhoto: user?.photo,
+      userName: user?.name,
+
+      createdAt: new Date(),
     };
+
+    console.log(ideaData);
 
     try {
       const res = await axios.post("http://localhost:5001/ideas", ideaData);
@@ -31,7 +35,7 @@ const AddIdea = () => {
         toast.success("Idea Added Successfully");
         form.reset();
       }
-    } catch (error) {
+    } catch {
       toast.error("Failed to add idea");
     }
   };

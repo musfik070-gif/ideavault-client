@@ -8,22 +8,22 @@ const MyIdeas = () => {
   const [ideas, setIdeas] = useState([]);
 
   useEffect(() => {
+    const fetchMyIdeas = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:5001/my-ideas?email=${user.email}`,
+        );
+
+        setIdeas(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     if (user?.email) {
       fetchMyIdeas();
     }
   }, [user]);
-
-  const fetchMyIdeas = async () => {
-    try {
-      const res = await axios.get(
-        `http://localhost:5001/my-ideas?email=${user.email}`,
-      );
-
-      setIdeas(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <div className="min-h-screen px-5 py-16">
