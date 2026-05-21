@@ -28,7 +28,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/ideas/:id",
-        element: <IdeaDetails />,
+        element: (
+          <PrivateRoute>
+            <IdeaDetails />
+          </PrivateRoute>
+        ),
         loader: ({ params }) =>
           fetch(`http://localhost:5001/ideas/${params.id}`),
       },
@@ -53,21 +57,17 @@ const router = createBrowserRouter([
 
           if (!email) return [];
 
+          const token = localStorage.getItem("token");
           const response = await fetch(
-            `http://localhost:5001/my-ideas?email=${email}`,
+            `http://localhost:5001/my-ideas`,
+            {
+              headers: {
+                authorization: `Bearer ${token}`
+              }
+            }
           );
           return response.json();
         },
-      },
-      {
-        path: "/update-idea/:id",
-        element: (
-          <PrivateRoute>
-            <UpdateIdea />
-          </PrivateRoute>
-        ),
-        loader: ({ params }) =>
-          fetch(`http://localhost:5001/ideas/${params.id}`),
       },
       {
         path: "/my-interactions",
