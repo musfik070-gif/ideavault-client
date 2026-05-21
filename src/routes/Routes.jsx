@@ -10,6 +10,7 @@ import AddIdea from "../pages/AddIdea";
 import MyIdeas from "../pages/MyIdeas";
 import MyInteractions from "../pages/MyInteractions";
 import IdeaDetails from "../pages/IdeaDetails";
+import UpdateIdea from "../pages/UpdateIdea";
 
 const router = createBrowserRouter([
   {
@@ -57,6 +58,16 @@ const router = createBrowserRouter([
           );
           return response.json();
         },
+      },
+      {
+        path: "/update-idea/:id",
+        element: (
+          <PrivateRoute>
+            <UpdateIdea />
+          </PrivateRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:5001/ideas/${params.id}`),
       },
       {
         path: "/my-interactions",

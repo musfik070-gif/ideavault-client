@@ -1,18 +1,11 @@
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useLoaderData } from "react-router";
-import { useAuth } from "../providers/AuthProvider";
 
 const MyIdeas = () => {
-  const { user } = useAuth();
-
   const loadedIdeas = useLoaderData();
-  const [myIdeas, setMyIdeas] = useState([]);
-
-  useEffect(() => {
-    setMyIdeas(loadedIdeas || []);
-  }, [loadedIdeas]);
+  const [myIdeas, setMyIdeas] = useState(loadedIdeas || []);
 
   const handleDelete = async (id) => {
     try {
@@ -65,6 +58,12 @@ const MyIdeas = () => {
                     <Link to={`/ideas/${idea._id}`}>
                       <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold">
                         View Details
+                      </button>
+                    </Link>
+
+                    <Link to={`/update-idea/${idea._id}`}>
+                      <button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-semibold">
+                        Update
                       </button>
                     </Link>
 
