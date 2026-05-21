@@ -46,6 +46,17 @@ const router = createBrowserRouter([
             <MyIdeas />
           </PrivateRoute>
         ),
+        loader: async () => {
+          const storedUser = JSON.parse(localStorage.getItem("user"));
+          const email = storedUser?.email;
+
+          if (!email) return [];
+
+          const response = await fetch(
+            `http://localhost:5001/my-ideas?email=${email}`,
+          );
+          return response.json();
+        },
       },
       {
         path: "/my-interactions",

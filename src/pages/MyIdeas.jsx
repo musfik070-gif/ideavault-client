@@ -1,41 +1,45 @@
 import axios from "axios";
+import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router";
 import { useAuth } from "../providers/AuthProvider";
 
 const MyIdeas = () => {
   const { user } = useAuth();
 
-  const [ideas, setIdeas] = useState([]);
+  const loadedIdeas = useLoaderData();
+  const [myIdeas, setMyIdeas] = useState([]);
 
   useEffect(() => {
-    const fetchMyIdeas = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:5001/my-ideas?email=${user.email}`,
-        );
+    setMyIdeas(loadedIdeas || []);
+  }, [loadedIdeas]);
 
-        setIdeas(res.data);
-      } catch (error) {
-        console.log(error);
+  const handleDelete = async (id) => {
+    try {
+      const res = await axios.delete(`http://localhost:5001/ideas/${id}`);
+
+      if (res.data.deletedCount > 0) {
+        toast.success("Idea Deleted");
+
+        const remainingIdeas = myIdeas.filter((idea) => idea._id !== id);
+        setMyIdeas(remainingIdeas);
       }
-    };
-
-    if (user?.email) {
-      fetchMyIdeas();
+    } catch (error) {
+      console.log(error);
+      toast.error("Delete Failed");
     }
-  }, [user]);
+  };
 
   return (
     <div className="min-h-screen px-5 py-16">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-5xl font-bold text-center mb-14">My Ideas</h2>
 
-        {ideas.length === 0 ? (
+        {myIdeas.length === 0 ? (
           <h3 className="text-center text-xl">No Ideas Found</h3>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {ideas.map((idea) => (
+            {myIdeas.map((idea) => (
               <div
                 key={idea._id}
                 className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg overflow-hidden"
@@ -57,12 +61,19 @@ const MyIdeas = () => {
                     {idea.category}
                   </span>
 
-                  <div className="mt-5">
+                  <div className="mt-5 space-y-3">
                     <Link to={`/ideas/${idea._id}`}>
                       <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold">
                         View Details
                       </button>
                     </Link>
+
+                    <button
+                      onClick={() => handleDelete(idea._id)}
+                      className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl font-semibold"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
               </div>
