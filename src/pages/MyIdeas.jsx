@@ -221,7 +221,7 @@ const MyIdeas = () => {
         ref={editDialogRef}
         closedby="any"
         onClick={(e) => handleBackdropClick(e, editDialogRef, setActiveIdeaForEdit)}
-        className="fixed inset-0 p-0 rounded-3xl border border-violet-100 dark:border-gray-800/80 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 w-full max-w-2xl shadow-2xl backdrop:bg-black/60 backdrop:backdrop-blur-sm overflow-hidden"
+        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 m-0 p-0 rounded-3xl border border-violet-100 dark:border-gray-800/80 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 w-full max-w-2xl shadow-2xl backdrop:bg-black/60 backdrop:backdrop-blur-sm overflow-hidden"
       >
         {activeIdeaForEdit && (
           <div className="flex flex-col h-full max-h-[85vh]">
@@ -395,7 +395,7 @@ const MyIdeas = () => {
         ref={deleteDialogRef}
         closedby="any"
         onClick={(e) => handleBackdropClick(e, deleteDialogRef, setActiveIdeaForDelete)}
-        className="fixed inset-0 p-0 rounded-3xl border border-violet-100 dark:border-gray-800/80 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 w-full max-w-md shadow-2xl backdrop:bg-black/60 backdrop:backdrop-blur-sm overflow-hidden"
+        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 m-0 p-0 rounded-3xl border border-violet-100 dark:border-gray-800/80 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 w-full max-w-md shadow-2xl backdrop:bg-black/60 backdrop:backdrop-blur-sm overflow-hidden"
       >
         {activeIdeaForDelete && (
           <div className="p-6 space-y-6">

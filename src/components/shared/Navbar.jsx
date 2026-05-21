@@ -297,7 +297,7 @@ const Navbar = () => {
             profileDialogRef.current.close();
           }
         }}
-        className="fixed inset-0 m-auto h-fit p-0 rounded-3xl border border-violet-100 dark:border-violet-950/30 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 w-full max-w-md shadow-2xl backdrop:bg-black/60 backdrop:backdrop-blur-sm overflow-hidden"
+        className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 m-0 h-fit p-0 rounded-3xl border border-violet-100 dark:border-violet-950/30 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 w-full max-w-md shadow-2xl backdrop:bg-black/60 backdrop:backdrop-blur-sm overflow-hidden"
       >
         {user && (
           <div className="p-6">
