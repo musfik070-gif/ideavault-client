@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const TrendingIdeas = ({ ideas = [] }) => {
   return (
     <section className="max-w-7xl mx-auto px-6 py-20">
@@ -37,9 +39,12 @@ const TrendingIdeas = ({ ideas = [] }) => {
                   )}
                 </div>
 
-                <button className="w-full bg-blue-600 hover:bg-blue-700 duration-300 text-white py-3 rounded-xl font-semibold cursor-pointer">
+                <Link
+                  to={`/ideas/${idea._id}`}
+                  className="w-full inline-block text-center bg-violet-600 hover:bg-violet-700 duration-300 text-white py-3 rounded-xl font-semibold cursor-pointer shadow-lg shadow-violet-500/20"
+                >
                   View Details
-                </button>
+                </Link>
               </div>
             </div>
           ))

@@ -1,10 +1,23 @@
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "../providers/AuthProvider";
 
 const Register = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  const searchParams = new URLSearchParams(location.search);
+  const redirectParam = searchParams.get("redirect");
+  
+  let statePath = null;
+  if (typeof location.state === "string") {
+    statePath = location.state;
+  } else if (location.state && typeof location.state.from === "string") {
+    statePath = location.state.from;
+  }
+  
+  const from = redirectParam || statePath || "/";
   const { loginUser } = useAuth();
 
   const handleRegister = async (e) => {
@@ -57,7 +70,7 @@ const Register = () => {
       loginUser(response.data.user || { name, email, photo: userData.photo });
 
       toast.success("Registration Successful");
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (error) {
       toast.error(error?.response?.data?.message || "Something went wrong!");
     }
@@ -124,7 +137,7 @@ const Register = () => {
 
         <p className="text-center mt-6 text-sm text-gray-600 dark:text-gray-400">
           Already have an account?{" "}
-          <Link to="/login" className="font-bold text-violet-600 dark:text-violet-400 hover:underline">
+          <Link to={`/login?redirect=${encodeURIComponent(from)}`} state={{ from }} className="font-bold text-violet-600 dark:text-violet-400 hover:underline">
             Login here
           </Link>
         </p>

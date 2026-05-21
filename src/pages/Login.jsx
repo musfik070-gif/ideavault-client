@@ -8,7 +8,18 @@ import { FcGoogle } from "react-icons/fc";
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state || "/";
+  
+  const searchParams = new URLSearchParams(location.search);
+  const redirectParam = searchParams.get("redirect");
+  
+  let statePath = null;
+  if (typeof location.state === "string") {
+    statePath = location.state;
+  } else if (location.state && typeof location.state.from === "string") {
+    statePath = location.state.from;
+  }
+  
+  const from = redirectParam || statePath || "/";
   const { loginUser } = useAuth();
 
   const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
@@ -177,7 +188,8 @@ const Login = () => {
         <p className="text-center mt-6 text-sm text-gray-600 dark:text-gray-400">
           New to IdeaVolt?
           <Link
-            to="/register"
+            to={`/register?redirect=${encodeURIComponent(from)}`}
+            state={{ from }}
             className="text-violet-600 dark:text-violet-400 font-bold ml-2 hover:underline"
           >
             Create an Account

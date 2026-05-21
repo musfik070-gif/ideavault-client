@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import Home from "../pages/Home";
 import Ideas from "../pages/Ideas";
@@ -33,8 +33,13 @@ const router = createBrowserRouter([
             <IdeaDetails />
           </PrivateRoute>
         ),
-        loader: ({ params }) =>
-          fetch(`http://localhost:5001/ideas/${params.id}`),
+        loader: ({ params }) => {
+          const token = localStorage.getItem("token");
+          if (!token) {
+            return redirect(`/login?redirect=${encodeURIComponent(`/ideas/${params.id}`)}`);
+          }
+          return fetch(`http://localhost:5001/ideas/${params.id}`);
+        },
       },
       {
         path: "/add-idea",
@@ -52,12 +57,15 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: async () => {
+          const token = localStorage.getItem("token");
+          if (!token) {
+            return redirect("/login?redirect=/my-ideas");
+          }
           const storedUser = JSON.parse(localStorage.getItem("user"));
           const email = storedUser?.email;
 
           if (!email) return [];
 
-          const token = localStorage.getItem("token");
           const response = await fetch(
             `http://localhost:5001/my-ideas`,
             {

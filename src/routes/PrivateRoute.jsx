@@ -6,7 +6,13 @@ const PrivateRoute = ({ children }) => {
   const location = useLocation();
 
   if (!token) {
-    return <Navigate to="/login" state={location.pathname} />;
+    return (
+      <Navigate
+        to={`/login?redirect=${encodeURIComponent(location.pathname)}`}
+        state={{ from: location.pathname }}
+        replace
+      />
+    );
   }
 
   return children;
