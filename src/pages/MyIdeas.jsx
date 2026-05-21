@@ -13,7 +13,6 @@ const MyIdeas = () => {
 
       if (res.data.deletedCount > 0) {
         toast.success("Idea Deleted");
-
         const remainingIdeas = myIdeas.filter((idea) => idea._id !== id);
         setMyIdeas(remainingIdeas);
       }
@@ -24,18 +23,29 @@ const MyIdeas = () => {
   };
 
   return (
-    <div className="min-h-screen px-5 py-16">
+    <div className="min-h-screen px-5 py-16 dark:bg-[#020817] dark:text-white">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-5xl font-bold text-center mb-14">My Ideas</h2>
 
         {myIdeas.length === 0 ? (
-          <h3 className="text-center text-xl">No Ideas Found</h3>
+          <div className="flex flex-col justify-center items-center min-h-[40vh] text-gray-500 dark:text-gray-400">
+            <h2 className="text-3xl font-bold mb-2 dark:text-white">
+              No Ideas Found
+            </h2>
+            <p>You haven't added any ideas yet.</p>
+            <Link
+              to="/add-idea"
+              className="mt-5 bg-blue-600 text-white px-6 py-2 rounded-lg"
+            >
+              Add New Idea
+            </Link>
+          </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {myIdeas.map((idea) => (
               <div
                 key={idea._id}
-                className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg overflow-hidden"
+                className="bg-white dark:bg-[#1e293b] rounded-3xl shadow-lg overflow-hidden"
               >
                 <img
                   src={idea.image}

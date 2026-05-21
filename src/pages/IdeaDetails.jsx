@@ -21,6 +21,7 @@ const IdeaDetails = () => {
       ideaTitle: idea.title,
       ideaImage: idea.image,
       ideaCategory: idea.category,
+      ideaOwnerEmail: idea.userEmail,
       userEmail: user.email,
       userName: user.name,
       createdAt: new Date(),
