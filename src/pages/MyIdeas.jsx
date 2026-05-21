@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../providers/AuthProvider";
 
 const MyIdeas = () => {
@@ -55,6 +56,14 @@ const MyIdeas = () => {
                   <span className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm">
                     {idea.category}
                   </span>
+
+                  <div className="mt-5">
+                    <Link to={`/ideas/${idea._id}`}>
+                      <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold">
+                        View Details
+                      </button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             ))}

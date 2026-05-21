@@ -28,6 +28,8 @@ const router = createBrowserRouter([
       {
         path: "/ideas/:id",
         element: <IdeaDetails />,
+        loader: ({ params }) =>
+          fetch(`http://localhost:5001/ideas/${params.id}`),
       },
       {
         path: "/add-idea",
