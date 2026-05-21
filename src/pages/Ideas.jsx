@@ -12,8 +12,9 @@ const Ideas = () => {
 
   useEffect(() => {
     setLoading(true);
+    const apiBase = import.meta.env.VITE_API_URL || "https://ideavault-server-topaz.vercel.app";
     axios
-      .get(`http://localhost:5001/ideas?search=${search}&filter=${filter}`)
+      .get(`${apiBase}/ideas?search=${search}&filter=${filter}`)
       .then((res) => {
         setIdeas(res.data);
         setLoading(false);

@@ -39,7 +39,8 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5001/login", {
+      const apiBase = import.meta.env.VITE_API_URL || "https://ideavault-server-topaz.vercel.app";
+      const response = await axios.post(`${apiBase}/login`, {
         email,
         password,
       });
@@ -68,8 +69,9 @@ const Login = () => {
 
   const triggerGoogleLogin = async (googleProfile) => {
     try {
+      const apiBase = import.meta.env.VITE_API_URL || "https://ideavault-server-topaz.vercel.app";
       // Check if user exists in the database first
-      const checkRes = await axios.get(`http://localhost:5001/users/check/${googleProfile.email}`);
+      const checkRes = await axios.get(`${apiBase}/users/check/${googleProfile.email}`);
       if (!checkRes.data.exists) {
         toast.error("Account not found. Please register first.");
         setIsGoogleModalOpen(false);
@@ -77,7 +79,7 @@ const Login = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:5001/google-login",
+        `${apiBase}/google-login`,
         googleProfile
       );
 

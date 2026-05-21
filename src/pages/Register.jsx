@@ -60,8 +60,9 @@ const Register = () => {
     };
 
     try {
+      const apiBase = import.meta.env.VITE_API_URL || "https://ideavault-server-topaz.vercel.app";
       const response = await axios.post(
-        "http://localhost:5001/register",
+        `${apiBase}/register`,
         userData,
       );
 

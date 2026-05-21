@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../providers/AuthProvider";
 
 export const axiosSecure = axios.create({
-  baseURL: "http://localhost:5001",
+  baseURL: import.meta.env.VITE_API_URL || "https://ideavault-server-topaz.vercel.app",
 });
 
 const useAxiosSecure = () => {

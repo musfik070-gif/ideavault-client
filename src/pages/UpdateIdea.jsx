@@ -23,8 +23,9 @@ const UpdateIdea = () => {
     };
 
     try {
+      const apiBase = import.meta.env.VITE_API_URL || "https://ideavault-server-topaz.vercel.app";
       const res = await axios.put(
-        `http://localhost:5001/ideas/${idea._id}`,
+        `${apiBase}/ideas/${idea._id}`,
         updatedIdea,
       );
 

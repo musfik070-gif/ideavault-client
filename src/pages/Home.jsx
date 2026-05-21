@@ -9,8 +9,9 @@ const Home = () => {
   const [ideas, setIdeas] = useState([]);
 
   useEffect(() => {
+    const apiBase = import.meta.env.VITE_API_URL || "https://ideavault-server-topaz.vercel.app";
     axios
-      .get("http://localhost:5001/trending-ideas")
+      .get(`${apiBase}/trending-ideas`)
       .then((res) => {
         setIdeas(res.data);
       })

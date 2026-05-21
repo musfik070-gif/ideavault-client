@@ -20,7 +20,8 @@ const IdeaDetails = () => {
   // Fetch comments
   const fetchComments = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/ideas/${idea._id}/comments`);
+      const apiBase = import.meta.env.VITE_API_URL || "https://ideavault-server-topaz.vercel.app";
+      const res = await axios.get(`${apiBase}/ideas/${idea._id}/comments`);
       setComments(res.data);
       setCommentsLoading(false);
     } catch (err) {

@@ -38,7 +38,8 @@ const router = createBrowserRouter([
           if (!token) {
             return redirect(`/login?redirect=${encodeURIComponent(`/ideas/${params.id}`)}`);
           }
-          return fetch(`http://localhost:5001/ideas/${params.id}`);
+          const apiBase = import.meta.env.VITE_API_URL || "https://ideavault-server-topaz.vercel.app";
+          return fetch(`${apiBase}/ideas/${params.id}`);
         },
       },
       {
@@ -66,8 +67,9 @@ const router = createBrowserRouter([
 
           if (!email) return [];
 
+          const apiBase = import.meta.env.VITE_API_URL || "https://ideavault-server-topaz.vercel.app";
           const response = await fetch(
-            `http://localhost:5001/my-ideas`,
+            `${apiBase}/my-ideas`,
             {
               headers: {
                 authorization: `Bearer ${token}`
