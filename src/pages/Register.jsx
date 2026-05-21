@@ -66,12 +66,8 @@ const Register = () => {
         userData,
       );
 
-      // SAVE TOKEN
-      localStorage.setItem("token", response.data.token);
-      loginUser(response.data.user || { name, email, photo: userData.photo });
-
-      toast.success("Registration Successful");
-      navigate(from, { replace: true });
+      toast.success("Registration Successful. Please log in.");
+      navigate(`/login?redirect=${encodeURIComponent(from)}`, { replace: true });
     } catch (error) {
       toast.error(error?.response?.data?.message || "Something went wrong!");
     }
