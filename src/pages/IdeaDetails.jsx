@@ -1,7 +1,44 @@
+import axios from "axios";
+import toast from "react-hot-toast";
 import { useLoaderData } from "react-router";
+import { useAuth } from "../providers/AuthProvider";
 
 const IdeaDetails = () => {
   const idea = useLoaderData();
+  const { user } = useAuth();
+
+  const handleInterest = async () => {
+    if (!user) {
+      return toast.error("Please login first");
+    }
+
+    if (user.email === idea.userEmail) {
+      return toast.error("You cannot interact with your own idea");
+    }
+
+    const interactionData = {
+      ideaId: idea._id,
+      ideaTitle: idea.title,
+      ideaImage: idea.image,
+      ideaCategory: idea.category,
+      userEmail: user.email,
+      userName: user.name,
+      createdAt: new Date(),
+    };
+
+    try {
+      const res = await axios.post(
+        "http://localhost:5001/interested",
+        interactionData,
+      );
+
+      if (res.data.insertedId) {
+        toast.success("Interest Added");
+      }
+    } catch {
+      toast.error("Failed");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#020817] text-white py-20 px-4">
@@ -28,6 +65,13 @@ const IdeaDetails = () => {
 
             <p className="text-gray-300">{idea.userEmail}</p>
           </div>
+
+          <button
+            onClick={handleInterest}
+            className="mt-6 bg-pink-600 hover:bg-pink-700 px-6 py-3 rounded-xl"
+          >
+            Interested
+          </button>
         </div>
       </div>
     </div>
