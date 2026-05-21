@@ -116,35 +116,80 @@ const Navbar = () => {
     </>
   );
 
+  const mobileLinks = (
+    <>
+      {links}
+      {!user ? (
+        <>
+          <div className="border-t border-gray-100 dark:border-gray-700 my-2"></div>
+          <li>
+            <NavLink
+              to="/login"
+              className={({ isActive }) =>
+                `px-4 py-2 rounded-xl transition ${
+                  isActive
+                    ? "bg-violet-600 text-white"
+                    : "hover:bg-violet-50 dark:hover:bg-violet-950/20 text-gray-700 dark:text-gray-200"
+                }`
+              }
+            >
+              Login
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/register"
+              className={({ isActive }) =>
+                `px-4 py-2 rounded-xl transition ${
+                  isActive
+                    ? "bg-violet-600 text-white"
+                    : "hover:bg-violet-50 dark:hover:bg-violet-950/20 text-gray-700 dark:text-gray-200"
+                }`
+              }
+            >
+              Register
+            </NavLink>
+          </li>
+        </>
+      ) : (
+        <>
+          <div className="border-t border-gray-100 dark:border-gray-700 my-2"></div>
+          <li className="px-4 py-2 text-xs font-bold text-gray-400 dark:text-gray-500 truncate">
+            {user.name}
+          </li>
+          <li>
+            <button
+              onClick={() => profileDialogRef.current?.showModal()}
+              className="px-4 py-2 text-left rounded-xl hover:bg-violet-50 dark:hover:bg-violet-950/20 text-gray-700 dark:text-gray-200 w-full"
+            >
+              Manage Profile
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 text-left rounded-xl hover:bg-red-50 dark:hover:bg-red-950/20 text-red-500 w-full"
+            >
+              Logout
+            </button>
+          </li>
+        </>
+      )}
+    </>
+  );
+
   return (
     <>
       <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md sticky top-0 z-50 border-b border-violet-100 dark:border-violet-950/30 transition-colors">
         <div className="navbar max-w-7xl mx-auto px-4 py-3">
           {/* LEFT */}
           <div className="navbar-start">
-            {/* MOBILE MENU */}
-            <div className="dropdown">
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-ghost lg:hidden text-gray-700 dark:text-white"
-              >
-                <FiMenu className="text-2xl" />
-              </div>
-              <ul
-                tabIndex={0}
-                className="menu menu-sm dropdown-content mt-3 z-[1] p-3 shadow-2xl bg-white dark:bg-gray-800 rounded-2xl w-52 gap-2 border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-white"
-              >
-                {links}
-              </ul>
-            </div>
-
             {/* LOGO */}
             <Link
               to="/"
-              className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-violet-500 flex items-center gap-2"
+              className="text-lg md:text-xl font-bold truncate text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-violet-500 flex items-center gap-2"
             >
-              <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-amber-500 flex items-center justify-center text-white text-lg font-black shadow-md shadow-violet-500/20">
+              <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-amber-500 flex items-center justify-center text-white text-lg font-black shadow-md shadow-violet-500/20 shrink-0">
                 V
               </span>
               IdeaVolt
@@ -152,18 +197,19 @@ const Navbar = () => {
           </div>
 
           {/* CENTER */}
-          <div className="navbar-center hidden lg:flex">
+          <div className="navbar-center hidden md:flex">
             <ul className="menu menu-horizontal px-1 gap-2 font-medium">
               {links}
             </ul>
           </div>
 
           {/* RIGHT */}
-          <div className="navbar-end gap-4">
+          <div className="navbar-end flex items-center gap-2">
             <ThemeToggle />
 
+            {/* Desktop User Section */}
             {user ? (
-              <div className="dropdown dropdown-end">
+              <div className="dropdown dropdown-end hidden md:block">
                 <div
                   tabIndex={0}
                   role="button"
@@ -208,7 +254,7 @@ const Navbar = () => {
                 </ul>
               </div>
             ) : (
-              <div className="flex items-center gap-3">
+              <div className="hidden md:flex items-center gap-3">
                 <Link to="/login">
                   <button className="border border-violet-200 dark:border-violet-900 px-5 py-2.5 rounded-xl text-violet-700 dark:text-violet-300 font-semibold hover:bg-violet-50 dark:hover:bg-violet-950/20 transition duration-300">
                     Login
@@ -222,6 +268,23 @@ const Navbar = () => {
                 </Link>
               </div>
             )}
+
+            {/* Mobile Hamburger Dropdown */}
+            <div className="dropdown dropdown-end flex md:hidden">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle text-gray-700 dark:text-white flex items-center justify-center"
+              >
+                <FiMenu className="text-2xl" />
+              </div>
+              <ul
+                tabIndex={0}
+                className="menu menu-sm dropdown-content mt-3 z-[50] p-3 shadow-2xl bg-white dark:bg-gray-800 rounded-2xl w-56 gap-2 border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-white"
+              >
+                {mobileLinks}
+              </ul>
+            </div>
           </div>
         </div>
       </div>
