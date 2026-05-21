@@ -57,6 +57,14 @@ const Login = () => {
 
   const triggerGoogleLogin = async (googleProfile) => {
     try {
+      // Check if user exists in the database first
+      const checkRes = await axios.get(`http://localhost:5001/users/check/${googleProfile.email}`);
+      if (!checkRes.data.exists) {
+        toast.error("Account not found. Please register first.");
+        setIsGoogleModalOpen(false);
+        return;
+      }
+
       const response = await axios.post(
         "http://localhost:5001/google-login",
         googleProfile
@@ -69,8 +77,13 @@ const Login = () => {
       toast.success(`Signed in as ${googleProfile.name}`);
       setIsGoogleModalOpen(false);
       navigate(from, { replace: true });
-    } catch {
-      toast.error("Google Login failed");
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        toast.error("Account not found. Please register first.");
+      } else {
+        toast.error("Google Login failed");
+      }
+      setIsGoogleModalOpen(false);
     }
   };
 
@@ -155,7 +168,7 @@ const Login = () => {
         {/* GOOGLE SIGN IN BUTTON */}
         <button
           onClick={() => setIsGoogleModalOpen(true)}
-          className="w-full border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-750 duration-300 flex items-center justify-center gap-3 py-3 rounded-xl font-bold text-gray-700 dark:text-gray-200 cursor-pointer"
+          className="w-full border border-gray-800 dark:border-gray-600 bg-white dark:bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 duration-300 flex items-center justify-center gap-3 py-3 rounded-xl font-bold text-gray-900 dark:text-gray-200 cursor-pointer"
         >
           <FcGoogle className="text-2xl" />
           Sign in with Google
@@ -288,7 +301,7 @@ const Login = () => {
                     value={customGoogleName}
                     onChange={(e) => setCustomGoogleName(e.target.value)}
                     required
-                    className="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-650 bg-transparent text-sm"
+                    className="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-transparent text-sm text-gray-900 dark:text-white outline-none focus:border-violet-600 focus:ring-1 focus:ring-violet-600"
                   />
                   <input
                     type="email"
@@ -296,7 +309,7 @@ const Login = () => {
                     value={customGoogleEmail}
                     onChange={(e) => setCustomGoogleEmail(e.target.value)}
                     required
-                    className="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-650 bg-transparent text-sm"
+                    className="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-transparent text-sm text-gray-900 dark:text-white outline-none focus:border-violet-600 focus:ring-1 focus:ring-violet-600"
                   />
                   <button
                     type="submit"

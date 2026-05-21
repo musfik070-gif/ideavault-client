@@ -226,8 +226,8 @@ const Navbar = () => {
 
       {/* MANAGE PROFILE MODAL */}
       {isProfileModalOpen && (
-        <dialog open className="modal modal-open">
-          <div className="modal-box bg-white dark:bg-gray-800 border border-violet-100 dark:border-violet-950/30 rounded-3xl shadow-2xl max-w-md p-6">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 border border-violet-100 dark:border-violet-950/30 rounded-3xl shadow-2xl max-w-md w-full p-6 relative max-h-[90vh] overflow-y-auto">
             <h3 className="font-bold text-2xl mb-4 text-violet-700 dark:text-violet-400">
               Manage Profile
             </h3>
@@ -241,7 +241,7 @@ const Navbar = () => {
                   name="name"
                   defaultValue={user.name}
                   required
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-transparent text-gray-900 dark:text-white outline-none focus:border-violet-600 focus:ring-1 focus:ring-violet-600 transition"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white outline-none focus:border-violet-600 focus:ring-1 focus:ring-violet-600 transition"
                 />
               </div>
               <div>
@@ -253,27 +253,27 @@ const Navbar = () => {
                   name="photo"
                   defaultValue={user.photo}
                   required
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-transparent text-gray-900 dark:text-white outline-none focus:border-violet-600 focus:ring-1 focus:ring-violet-600 transition"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white outline-none focus:border-violet-600 focus:ring-1 focus:ring-violet-600 transition"
                 />
               </div>
-              <div className="modal-action flex justify-end gap-3 pt-2">
+              <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-700 mt-6">
                 <button
                   type="button"
                   onClick={() => setIsProfileModalOpen(false)}
-                  className="px-5 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition"
+                  className="px-5 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-semibold shadow-lg shadow-violet-500/20 transition"
+                  className="px-5 py-2.5 bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-semibold shadow-lg shadow-violet-500/20 transition cursor-pointer"
                 >
                   Save Changes
                 </button>
               </div>
             </form>
           </div>
-        </dialog>
+        </div>
       )}
     </div>
   );
