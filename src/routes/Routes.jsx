@@ -9,6 +9,7 @@ import PrivateRoute from "./PrivateRoute";
 import AddIdea from "../pages/AddIdea";
 import MyIdeas from "../pages/MyIdeas";
 import MyInteractions from "../pages/MyInteractions";
+import IdeaDetails from "../pages/IdeaDetails";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "/ideas",
         element: <Ideas />,
+      },
+      {
+        path: "/ideas/:id",
+        element: <IdeaDetails />,
       },
       {
         path: "/add-idea",
