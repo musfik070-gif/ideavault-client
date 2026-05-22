@@ -163,6 +163,7 @@ const Login = () => {
             theme="filled_black"
             shape="rectangular"
             width="100%"
+            locale="en"
           />
         </div>
 
