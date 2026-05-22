@@ -3,7 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../providers/AuthProvider";
-import { FcGoogle } from "react-icons/fc";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -23,9 +23,6 @@ const Login = () => {
   const { loginUser } = useAuth();
 
   const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
-  const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false);
-  const [customGoogleEmail, setCustomGoogleEmail] = useState("");
-  const [customGoogleName, setCustomGoogleName] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -67,49 +64,28 @@ const Login = () => {
     }
   };
 
-  const triggerGoogleLogin = async (googleProfile) => {
+  const handleGoogleLogin = async (credentialResponse) => {
     try {
       const apiBase = import.meta.env.VITE_API_URL || "https://ideavault-server-topaz.vercel.app";
-      // Check if user exists in the database first
-      const checkRes = await axios.get(`${apiBase}/users/check/${googleProfile.email}`);
-      if (!checkRes.data.exists) {
-        toast.error("Account not found. Please register first.");
-        setIsGoogleModalOpen(false);
-        return;
-      }
-
-      const response = await axios.post(
-        `${apiBase}/google-login`,
-        googleProfile
+      const res = await axios.post(
+        `${apiBase}/auth/google-login`,
+        { credential: credentialResponse.credential }
       );
 
-      // SAVE TOKEN & USER
-      localStorage.setItem("token", response.data.token);
-      loginUser(response.data.user);
-
-      toast.success(`Signed in as ${googleProfile.name}`);
-      setIsGoogleModalOpen(false);
-      navigate(from, { replace: true });
-    } catch (error) {
-      if (error.response && error.response.status === 404) {
-        toast.error("Account not found. Please register first.");
-      } else {
-        toast.error("Google Login failed");
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
+        loginUser(res.data.user);
+        toast.success("Logged in successfully!");
+        navigate(from, { replace: true });
       }
-      setIsGoogleModalOpen(false);
+    } catch (error) {
+      if (error.response?.status === 404) {
+        toast.error("Account not found. Please register first.");
+        navigate("/register");
+      } else {
+        toast.error("Google login failed. Please try again.");
+      }
     }
-  };
-
-  const handleCustomGoogleSubmit = (e) => {
-    e.preventDefault();
-    if (!customGoogleEmail || !customGoogleName) {
-      return toast.error("Please enter email and name");
-    }
-    triggerGoogleLogin({
-      name: customGoogleName,
-      email: customGoogleEmail,
-      photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80",
-    });
   };
 
   return (
@@ -179,13 +155,16 @@ const Login = () => {
         </div>
 
         {/* GOOGLE SIGN IN BUTTON */}
-        <button
-          onClick={() => setIsGoogleModalOpen(true)}
-          className="w-full border border-gray-800 dark:border-gray-600 bg-white dark:bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 duration-300 flex items-center justify-center gap-3 py-3 rounded-xl font-bold text-gray-900 dark:text-gray-200 cursor-pointer"
-        >
-          <FcGoogle className="text-2xl" />
-          Sign in with Google
-        </button>
+        <div className="w-full flex justify-center">
+          <GoogleLogin
+            onSuccess={handleGoogleLogin}
+            onError={() => toast.error("Google login failed.")}
+            useOneTap={false}
+            theme="filled_black"
+            shape="rectangular"
+            width="100%"
+          />
+        </div>
 
         <p className="text-center mt-6 text-sm text-gray-600 dark:text-gray-400">
           New to IdeaVolt?
@@ -235,115 +214,6 @@ const Login = () => {
                 </button>
               </div>
             </form>
-          </div>
-        </dialog>
-      )}
-
-      {/* GOOGLE ACCOUNTS PICKER SIMULATION */}
-      {isGoogleModalOpen && (
-        <dialog open className="modal modal-open">
-          <div className="modal-box bg-white dark:bg-gray-800 border border-violet-100 dark:border-violet-950/30 rounded-3xl shadow-2xl max-w-md p-6">
-            <div className="text-center mb-6">
-              <FcGoogle className="text-4xl mx-auto mb-2" />
-              <h3 className="font-bold text-2xl text-gray-900 dark:text-white">
-                Choose an account
-              </h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                to continue to <span className="font-bold">IdeaVolt</span>
-              </p>
-            </div>
-
-            <div className="space-y-3">
-              <button
-                onClick={() =>
-                  triggerGoogleLogin({
-                    name: "Alex Innovator",
-                    email: "alex.innovator@gmail.com",
-                    photo: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&q=80",
-                  })
-                }
-                className="w-full flex items-center gap-3 p-3 rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-violet-50 dark:hover:bg-violet-950/20 text-left transition"
-              >
-                <img
-                  src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&q=80"
-                  alt="Alex"
-                  className="w-10 h-10 rounded-full object-cover"
-                />
-                <div>
-                  <p className="font-bold text-sm text-gray-900 dark:text-white">
-                    Alex Innovator
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    alex.innovator@gmail.com
-                  </p>
-                </div>
-              </button>
-
-              <button
-                onClick={() =>
-                  triggerGoogleLogin({
-                    name: "Emma AI Dev",
-                    email: "emma.ai.developer@gmail.com",
-                    photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&q=80",
-                  })
-                }
-                className="w-full flex items-center gap-3 p-3 rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-violet-50 dark:hover:bg-violet-950/20 text-left transition"
-              >
-                <img
-                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&q=80"
-                  alt="Emma"
-                  className="w-10 h-10 rounded-full object-cover"
-                />
-                <div>
-                  <p className="font-bold text-sm text-gray-900 dark:text-white">
-                    Emma AI Dev
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    emma.ai.developer@gmail.com
-                  </p>
-                </div>
-              </button>
-
-              <div className="border-t border-gray-200 dark:border-gray-700 my-4 pt-4">
-                <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">
-                  Or use a custom Google ID:
-                </p>
-                <form onSubmit={handleCustomGoogleSubmit} className="space-y-3">
-                  <input
-                    type="text"
-                    placeholder="Full Name"
-                    value={customGoogleName}
-                    onChange={(e) => setCustomGoogleName(e.target.value)}
-                    required
-                    className="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-transparent text-sm text-gray-900 dark:text-white outline-none focus:border-violet-600 focus:ring-1 focus:ring-violet-600"
-                  />
-                  <input
-                    type="email"
-                    placeholder="google-email@gmail.com"
-                    value={customGoogleEmail}
-                    onChange={(e) => setCustomGoogleEmail(e.target.value)}
-                    required
-                    className="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-transparent text-sm text-gray-900 dark:text-white outline-none focus:border-violet-600 focus:ring-1 focus:ring-violet-600"
-                  />
-                  <button
-                    type="submit"
-                    className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm py-2 rounded-xl"
-                  >
-                    Use Custom Google Profile
-                  </button>
-                </form>
-              </div>
-            </div>
-
-            <div className="modal-action">
-              <button
-                type="button"
-                onClick={() => setIsGoogleModalOpen(false)}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-gray-700 dark:text-gray-300 transition"
-              >
-                Close
-              </button>
-            </div>
           </div>
         </dialog>
       )}
